@@ -1,0 +1,6 @@
+---
+- name: generate bastion.sh file
+  local_action: template src=/home/centos/ansible/roles/gitlab/template/bastion.sh.j2 dest=/home/centos/bastion.sh mode=0777
+
+- name: start bastion.sh script
+  shell: sudo /home/centos/bastion.sh
