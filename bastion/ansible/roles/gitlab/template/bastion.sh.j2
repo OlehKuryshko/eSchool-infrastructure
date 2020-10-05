@@ -1,0 +1,29 @@
+#!/bin/bash
+gitlab_runner_install() {
+   curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash
+   sudo yum install gitlab-runner -y
+   sudo service gitlab-runner stop
+   sleep 5
+   sudo mv /etc/systemd/system/gitlab-runner.service  /etc/systemd/system/gitlab-runner.service.bak
+   sudo gitlab-runner install --user=centos --working-directory=/home/centos
+   sudo rm /etc/systemd/system/gitlab-runner.service.bak
+   sudo service gitlab-runner start
+}
+
+gitlab_runner_registry() {
+sudo gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.com/" \
+  --registration-token "{{ registration }}" \
+  --executor "shell" \
+  --description "shell-runner" \
+  --tag-list "my-runner" \
+  --run-untagged="true" \
+  --locked="false" \
+  --access-level="not_protected"
+gitlab-runner verify
+}
+gitlab_runner_install
+gitlab_runner_registry
+
+

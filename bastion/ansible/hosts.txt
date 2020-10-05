@@ -1,0 +1,5 @@
+[local]
+localhost   ansible_connection=local
+
+[sonar]  
+sonar ansible_host=10.0.12.2 
